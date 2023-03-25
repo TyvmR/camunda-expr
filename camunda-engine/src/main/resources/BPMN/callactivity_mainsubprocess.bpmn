@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0sh39qk" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.2.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.17.0">
+  <bpmn:process id="Process_call_activity_main_subprocess" name="调用子流程-主流程" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0bfkm6z</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Activity_12639jp" name="用户上传视频" camunda:assignee="xiaoming">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="numbers" label="数量" type="long" defaultValue="1" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0bfkm6z</bpmn:incoming>
+      <bpmn:outgoing>Flow_0efz3ik</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0bfkm6z" sourceRef="StartEvent_1" targetRef="Activity_12639jp" />
+    <bpmn:sequenceFlow id="Flow_0efz3ik" sourceRef="Activity_12639jp" targetRef="Activity_011pkip" />
+    <bpmn:callActivity id="Activity_011pkip" name="处理单个视频" calledElement="Process_call_activity_subprocess">
+      <bpmn:extensionElements>
+        <camunda:in sourceExpression="${videoName}" target="targetVideoName" />
+        <camunda:out sourceExpression="${targetResult}" target="result" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0efz3ik</bpmn:incoming>
+      <bpmn:outgoing>Flow_0dx7cd2</bpmn:outgoing>
+      <bpmn:multiInstanceLoopCharacteristics camunda:collection="${videoNames}" camunda:elementVariable="videoName" />
+    </bpmn:callActivity>
+    <bpmn:userTask id="Activity_0u79f8u" name="确定上传" camunda:assignee="wangwu">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="isUpload" label="是否上传" type="string" defaultValue="是" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0dx7cd2</bpmn:incoming>
+      <bpmn:outgoing>Flow_18thgor</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0dx7cd2" sourceRef="Activity_011pkip" targetRef="Activity_0u79f8u" />
+    <bpmn:intermediateThrowEvent id="Event_1etlfi6">
+      <bpmn:incoming>Flow_18thgor</bpmn:incoming>
+    </bpmn:intermediateThrowEvent>
+    <bpmn:sequenceFlow id="Flow_18thgor" sourceRef="Activity_0u79f8u" targetRef="Event_1etlfi6" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_call_activity_main_subprocess">
+      <bpmndi:BPMNEdge id="Flow_0bfkm6z_di" bpmnElement="Flow_0bfkm6z">
+        <di:waypoint x="215" y="97" />
+        <di:waypoint x="280" y="97" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0efz3ik_di" bpmnElement="Flow_0efz3ik">
+        <di:waypoint x="380" y="97" />
+        <di:waypoint x="450" y="97" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0dx7cd2_di" bpmnElement="Flow_0dx7cd2">
+        <di:waypoint x="550" y="97" />
+        <di:waypoint x="630" y="97" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_18thgor_di" bpmnElement="Flow_18thgor">
+        <di:waypoint x="730" y="97" />
+        <di:waypoint x="812" y="97" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="79" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_13v02wv_di" bpmnElement="Activity_12639jp">
+        <dc:Bounds x="280" y="57" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0e32dmr_di" bpmnElement="Activity_011pkip">
+        <dc:Bounds x="450" y="57" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0fogyys_di" bpmnElement="Activity_0u79f8u">
+        <dc:Bounds x="630" y="57" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1etlfi6_di" bpmnElement="Event_1etlfi6">
+        <dc:Bounds x="812" y="79" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

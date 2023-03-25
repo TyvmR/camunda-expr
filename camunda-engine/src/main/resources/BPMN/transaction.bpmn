@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1denoh8" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.2.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.17.0">
+  <bpmn:process id="Process_transaction" name="事务" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_19crytr</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_19crytr" sourceRef="StartEvent_1" targetRef="Activity_0fnr1y2" />
+    <bpmn:userTask id="Activity_0fnr1y2" name="Provide&#10;shipping&#10;address">
+      <bpmn:incoming>Flow_19crytr</bpmn:incoming>
+      <bpmn:outgoing>Flow_19dvnsq</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_19dvnsq" sourceRef="Activity_0fnr1y2" targetRef="Activity_1ff8mxb" />
+    <bpmn:serviceTask id="Activity_1ff8mxb" name="Generate&#10;invoice" camunda:asyncBefore="true" camunda:exclusive="false" camunda:class="com.forestlake.workflow.transaction.GenerateInvoice">
+      <bpmn:incoming>Flow_19dvnsq</bpmn:incoming>
+      <bpmn:outgoing>Flow_167ni7t</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_167ni7t" sourceRef="Activity_1ff8mxb" targetRef="Activity_16t9ff6" />
+    <bpmn:sendTask id="Activity_16t9ff6" name="Send invoice&#10;to customer" camunda:class="com.forestlake.workflow.transaction.SendTask">
+      <bpmn:incoming>Flow_167ni7t</bpmn:incoming>
+      <bpmn:outgoing>Flow_149bo8q</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:intermediateThrowEvent id="Event_190u25f">
+      <bpmn:incoming>Flow_149bo8q</bpmn:incoming>
+    </bpmn:intermediateThrowEvent>
+    <bpmn:sequenceFlow id="Flow_149bo8q" sourceRef="Activity_16t9ff6" targetRef="Event_190u25f" />
+    <bpmn:textAnnotation id="TextAnnotation_0urpiqy">
+      <bpmn:text>有异步连续</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0xbxki0" sourceRef="Activity_1ff8mxb" targetRef="TextAnnotation_0urpiqy" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_transaction">
+      <bpmndi:BPMNShape id="TextAnnotation_0urpiqy_di" bpmnElement="TextAnnotation_0urpiqy">
+        <dc:Bounds x="530" y="50" width="100" height="30" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_149bo8q_di" bpmnElement="Flow_149bo8q">
+        <di:waypoint x="690" y="177" />
+        <di:waypoint x="752" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_167ni7t_di" bpmnElement="Flow_167ni7t">
+        <di:waypoint x="530" y="177" />
+        <di:waypoint x="590" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_19dvnsq_di" bpmnElement="Flow_19dvnsq">
+        <di:waypoint x="370" y="177" />
+        <di:waypoint x="430" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_19crytr_di" bpmnElement="Flow_19crytr">
+        <di:waypoint x="215" y="177" />
+        <di:waypoint x="270" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="159" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_18gxfya_di" bpmnElement="Activity_0fnr1y2">
+        <dc:Bounds x="270" y="137" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0n5bt9z_di" bpmnElement="Activity_1ff8mxb">
+        <dc:Bounds x="430" y="137" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_15j0upw_di" bpmnElement="Activity_16t9ff6">
+        <dc:Bounds x="590" y="137" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_190u25f_di" bpmnElement="Event_190u25f">
+        <dc:Bounds x="752" y="159" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_0xbxki0_di" bpmnElement="Association_0xbxki0">
+        <di:waypoint x="516" y="137" />
+        <di:waypoint x="567" y="80" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
