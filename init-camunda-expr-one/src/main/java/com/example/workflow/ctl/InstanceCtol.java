@@ -25,6 +25,12 @@ public class InstanceCtol {
 		identityService.setAuthenticatedUserId("wangbing");
 		 VariableMap map = Variables.createVariables();
 		 map.put("isFree", false);
+		 map.put("originDays", 10);
 		runtimeService.startProcessInstanceByKey(processKey,map);
+	}
+	
+	@GetMapping("/touchSignal/{siganString}")
+	public void touchSignal(@PathVariable(value = "siganString") String siganString) {
+		runtimeService.createSignalEvent(siganString).send();
 	}
 }
